@@ -30,21 +30,19 @@ async function bootstrap() {
     });
   }
 
-  if (env.nodeEnv !== 'production') {
-    try {
-      const seedResult = await seedSamplePrompts();
+  try {
+    const seedResult = await seedSamplePrompts();
 
-      if (seedResult.skipped) {
-        logger.info('Sample prompts seed skipped because prompts already exist');
-      } else {
-        logger.info('Sample prompts seeded', { inserted: seedResult.inserted });
-      }
-    } catch (err) {
-      logger.error('Failed to seed sample prompts', {
-        error: err instanceof Error ? err.message : String(err)
-      });
-      throw err;
+    if (seedResult.skipped) {
+      logger.info('Sample prompts seed skipped because sample data already exists');
+    } else {
+      logger.info('Sample prompts seeded', { inserted: seedResult.inserted });
     }
+  } catch (err) {
+    logger.error('Failed to seed sample prompts', {
+      error: err instanceof Error ? err.message : String(err)
+    });
+    throw err;
   }
 
   app.listen(env.port, () => {

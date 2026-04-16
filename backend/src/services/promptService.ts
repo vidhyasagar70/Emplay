@@ -34,7 +34,10 @@ export async function fetchPromptById(id: string) {
   }
 
   if (!redisClient.isReady) {
-    throw new HttpError(503, 'View counter is temporarily unavailable');
+    return {
+      ...prompt,
+      view_count: 0
+    };
   }
 
   const key = `prompt:${id}:views`;
