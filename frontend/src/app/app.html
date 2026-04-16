@@ -1,0 +1,28 @@
+<div class="min-h-screen bg-[radial-gradient(circle_at_top,#e2e8f0,#f8fafc_50%)]">
+  <header class="border-b border-slate-200 bg-white/80 backdrop-blur">
+    <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+      <a routerLink="/" class="text-lg font-bold tracking-tight text-slate-900">AI Prompt Library</a>
+
+      <div class="flex items-center gap-3 text-sm font-medium">
+        <a routerLink="/" routerLinkActive="text-slate-900" [routerLinkActiveOptions]="{ exact: true }" class="text-slate-600 hover:text-slate-900">
+          Prompts
+        </a>
+        <a routerLink="/add" routerLinkActive="text-slate-900" class="text-slate-600 hover:text-slate-900">Add</a>
+
+        @if (!isLoggedIn()) {
+          <a routerLink="/login" routerLinkActive="text-slate-900" class="rounded-md border border-slate-300 px-3 py-1.5 text-slate-700 hover:border-slate-400">
+            Login
+          </a>
+        } @else {
+          <button type="button" class="rounded-md border border-slate-300 px-3 py-1.5 text-slate-700 hover:border-slate-400" (click)="logout()">
+            Logout
+          </button>
+        }
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <router-outlet></router-outlet>
+  </main>
+</div>
