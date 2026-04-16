@@ -81,3 +81,7 @@ export async function getAllTags(): Promise<Array<{ id: string; name: string }>>
   const tags = (await PromptModel.distinct('tags')) as string[];
   return tags.sort((left, right) => left.localeCompare(right)).map((tag) => ({ id: tag, name: tag }));
 }
+
+export async function countPrompts(): Promise<number> {
+  return PromptModel.countDocuments();
+}

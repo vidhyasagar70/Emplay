@@ -2,6 +2,7 @@ import { app } from './app';
 import { env } from './config/env';
 import { connectMongo } from './config/mongo';
 import { connectRedis, disableRedisClient } from './config/redis';
+import { seedSamplePrompts } from './services/seedService';
 import { logger } from './utils/logger';
 
 async function bootstrap() {
@@ -27,6 +28,23 @@ async function bootstrap() {
     logger.warn('Redis connection failed in development mode. Continuing with degraded behavior.', {
       error: err instanceof Error ? err.message : String(err)
     });
+  }
+
+  if (env.nodeEnv !== 'production') {
+    try {
+      const seedResult = await seedSamplePrompts();
+
+      if (seedResult.skipped) {
+        logger.info('Sample prompts seed skipped because prompts already exist');
+      } else {
+        logger.info('Sample prompts seeded', { inserted: seedResult.inserted });
+      }
+    } catch (err) {
+      logger.error('Failed to seed sample prompts', {
+        error: err instanceof Error ? err.message : String(err)
+      });
+      throw err;
+    }
   }
 
   app.listen(env.port, () => {
