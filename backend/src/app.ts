@@ -12,12 +12,35 @@ import { logger } from './utils/logger';
 
 const app = express();
 
+function isAllowedOrigin(origin?: string): boolean {
+  if (!origin) {
+    return true;
+  }
+
+  if (origin === env.frontendUrl) {
+    return true;
+  }
+
+  if (env.nodeEnv !== 'production') {
+    return /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(origin);
+  }
+
+  return false;
+}
+
 morgan.token('request-id', (req) => (req as { requestId?: string }).requestId ?? '-');
 
 app.use(helmet());
 app.use(
   cors({
-    origin: env.frontendUrl
+    origin: (origin, callback) => {
+      if (isAllowedOrigin(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(new Error('CORS origin denied'));
+    }
   })
 );
 app.use(requestContextMiddleware);
