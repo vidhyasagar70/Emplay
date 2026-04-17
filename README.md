@@ -49,6 +49,10 @@ Use these demo credentials for the protected create flow:
 - Username: `admin`
 - Password: `admin123`
 
+## Demo Video
+
+- Google Drive: [https://drive.google.com/file/d/1y9J-PXPq2FQjtLVCDT5Cb0XKB13zUSlp/view?usp=sharing](https://drive.google.com/file/d/1y9J-PXPq2FQjtLVCDT5Cb0XKB13zUSlp/view?usp=sharing)
+
 ## Live Environment
 
 - Frontend URL: [https://emplay-five.vercel.app/](https://emplay-five.vercel.app/)

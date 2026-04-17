@@ -119,6 +119,7 @@ The UI follows a simple flow:
 
 - Frontend URL: https://emplay-five.vercel.app/
 - Backend dashboard: https://dashboard.render.com/
+- Demo video: https://drive.google.com/file/d/1y9J-PXPq2FQjtLVCDT5Cb0XKB13zUSlp/view?usp=sharing
 - Docker Compose is used for local parity.
 - The app is designed to be production-ready with request validation, security headers, and a clean separation of responsibilities.
 
