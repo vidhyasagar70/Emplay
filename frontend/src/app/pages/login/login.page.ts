@@ -4,6 +4,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { PromptApiService } from '../../core/prompt-api.service';
 import { AuthService } from '../../core/auth.service';
+import { ToastService } from '../../core/toast.service';
 
 @Component({
   selector: 'app-login-page',
@@ -53,6 +54,7 @@ export class LoginPage {
   private readonly api = inject(PromptApiService);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
   protected readonly submitting = signal(false);
   protected readonly errorMessage = signal('');
@@ -79,12 +81,15 @@ export class LoginPage {
     this.api.login(this.form.value.username ?? '', this.form.value.password ?? '').subscribe({
       next: (token) => {
         this.auth.setToken(token);
+        this.toastService.success('Logged in successfully.');
         this.submitting.set(false);
         this.router.navigate(['/add']);
       },
       error: (error) => {
         this.submitting.set(false);
-        this.errorMessage.set(error?.error?.error || 'Invalid credentials.');
+        const message = error?.error?.error || 'Invalid credentials.';
+        this.errorMessage.set(message);
+        this.toastService.error(message);
       }
     });
   }

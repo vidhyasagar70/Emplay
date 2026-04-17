@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { PromptApiService } from '../../core/prompt-api.service';
+import { ToastService } from '../../core/toast.service';
 
 @Component({
   selector: 'app-add-prompt-page',
@@ -65,6 +66,7 @@ export class AddPromptPage {
   private readonly fb = inject(FormBuilder);
   private readonly api = inject(PromptApiService);
   private readonly router = inject(Router);
+  private readonly toastService = inject(ToastService);
 
   protected readonly submitting = signal(false);
   protected readonly errorMessage = signal('');
@@ -107,11 +109,14 @@ export class AddPromptPage {
       .subscribe({
         next: (prompt) => {
           this.submitting.set(false);
+          this.toastService.success('Prompt created successfully.');
           this.router.navigate(['/prompts', prompt.id]);
         },
         error: (error) => {
           this.submitting.set(false);
-          this.errorMessage.set(error?.error?.error || 'Failed to create prompt. Make sure you are logged in.');
+          const message = error?.error?.error || 'Failed to create prompt. Make sure you are logged in.';
+          this.errorMessage.set(message);
+          this.toastService.error(message);
         }
       });
   }

@@ -1,16 +1,58 @@
 # AI Prompt Library
 
-Production-ready full-stack application to create, browse, and inspect AI image generation prompts with Redis-backed view counters.
+Production-ready full-stack application for creating, browsing, and inspecting AI image-generation prompts with Redis-backed view counters.
 
 ## Project Overview
 
-This project provides a practical prompt management platform with cleanly separated frontend and backend responsibilities:
+This project is organized as a practical prompt management platform with a clean split between the frontend and backend:
 
-- Angular frontend for list/detail/create/login flows
-- TypeScript Express API with layered architecture
+- Angular frontend for list, detail, create, and login flows
+- TypeScript Express API with a layered architecture
 - MongoDB for prompt persistence and tag lookup
 - Redis as the source of truth for live view counters
-- Docker Compose for consistent multi-service runtime
+- Docker Compose for a consistent multi-service runtime
+
+## Assignment Coverage
+
+The original assignment asked for Angular, Python/Django, PostgreSQL, and Redis, with permission to use another feasible stack if needed. This implementation uses Angular, Node.js, MongoDB, and Redis, which still satisfies the product goals and bonus scope while keeping the system production-ready.
+
+Implemented requirements:
+
+- Prompt list, detail, and add-prompt UI
+- Reactive form validation for title, content, and complexity
+- Prompt API with list, create, and detail endpoints
+- Redis-backed live view counter returned in prompt detail responses
+- Login flow and protected prompt creation endpoint
+- Tag filtering support in the UI and API
+- Docker Compose setup for local multi-service runtime
+- Deployed frontend and backend references
+
+For the full architecture breakdown, see [docs/application-architecture.md](docs/application-architecture.md).
+
+## Submission Checklist
+
+What is included in the submission package:
+
+- Working frontend deployment reference
+- Backend deployment reference
+- Postman collection for all main API flows
+- Dedicated architecture document
+- Docker Compose setup for local execution
+- README sections covering stack choice, setup, and production notes
+
+The codebase is structured so a reviewer can quickly verify the product flow, inspect the API with Postman, and understand the implementation decisions without extra context.
+
+## Demo Login
+
+Use these demo credentials for the protected create flow:
+
+- Username: `admin`
+- Password: `admin123`
+
+## Live Environment
+
+- Frontend URL: [https://emplay-five.vercel.app/](https://emplay-five.vercel.app/)
+- Backend deployment dashboard: [https://dashboard.render.com/](https://dashboard.render.com/)
 
 ## Tech Stack
 
@@ -18,18 +60,19 @@ This project provides a practical prompt management platform with cleanly separa
 - Backend: Node.js, Express, TypeScript, Zod, JWT
 - Database: MongoDB 7
 - Cache: Redis 7
-- DevOps: Docker, Docker Compose
+- DevOps: Docker, Docker Compose, Vercel, Render
 
-## Why This Stack
+## Why I Chose This Stack
 
-I chose Node.js and MongoDB for this submission because I am more comfortable shipping quickly with that stack, which helped me keep the implementation focused and stable under the time limit.
+I chose Node.js and MongoDB because I am comfortable working with that stack, which let me move quickly while keeping the implementation stable and easy to reason about.
 
 Practical advantages for this project:
 
-- MongoDB matches the prompt data shape well, especially the prompt content and tags array.
-- The document model keeps the backend simpler and reduces schema-migration overhead.
-- Node.js lets the API and frontend integration stay in the same language family.
-- The stack is easy to containerize and demo consistently with Docker Compose.
+- MongoDB fits the prompt document shape well, especially the prompt content and tags array.
+- The document model keeps the backend simple and reduces schema-migration overhead.
+- Node.js keeps the API and frontend integration in the same language family, which lowers context switching.
+- The stack is easy to containerize, deploy, and demonstrate consistently.
+- The same JavaScript/TypeScript skill set applies across frontend, backend, and tooling, which improves maintainability.
 
 ## Features
 
@@ -51,6 +94,26 @@ Practical advantages for this project:
 
 - Prompt document with UUID ID, title, content, complexity, created_at, and tags
 - Tags are stored on the prompt document and surfaced through the API
+
+## Postman Collection
+
+The repository includes a Postman collection for the main API workflows:
+
+- Health check
+- Login and token capture
+- List prompts
+- Filter prompts by tag
+- Fetch prompt details by ID
+- Create a prompt with Bearer authentication
+
+Import the collection from:
+
+- [postman/ai-prompts.postman_collection.json](postman/ai-prompts.postman_collection.json)
+
+Collection variables:
+
+- `baseUrl`: defaults to `http://localhost:4000`
+- `token`: populated after login and reused for protected requests
 
 ## Architecture Explanation
 
@@ -147,6 +210,13 @@ docker-compose up --build
 - MongoDB: localhost:27017
 - Redis: localhost:6379
 
+### Run the API Collection in Postman
+
+1. Import [postman/ai-prompts.postman_collection.json](postman/ai-prompts.postman_collection.json).
+2. Set the `baseUrl` collection variable to your local or deployed backend URL.
+3. Send the login request to populate the `token` variable.
+4. Use the token-bearing requests to verify protected endpoints.
+
 ### Run Locally (Without Docker)
 
 Backend:
@@ -195,6 +265,7 @@ Backend `.env`:
 - MongoDB indexes support tag filtering and created_at sorting
 - Docker services include health checks and startup ordering
 - Runtime containers run as non-root user
+- The deployed frontend and backend references are documented above for easier handoff and review
 
 ## Screenshots
 

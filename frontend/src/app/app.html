@@ -1,4 +1,22 @@
 <div class="min-h-screen bg-[radial-gradient(circle_at_top,#e2e8f0,#f8fafc_50%)]">
+  <div class="pointer-events-none fixed right-4 top-4 z-50 flex w-[calc(100%-2rem)] max-w-sm flex-col gap-3 sm:right-6 sm:top-6 sm:w-full">
+    @for (toast of toastService.toasts(); track toast.id) {
+      <div
+        class="pointer-events-auto flex items-start gap-3 rounded-2xl border px-4 py-3 shadow-lg backdrop-blur"
+        [class.border-emerald-200]="toast.kind === 'success'"
+        [class.bg-emerald-50]="toast.kind === 'success'"
+        [class.text-emerald-900]="toast.kind === 'success'"
+        [class.border-rose-200]="toast.kind === 'error'"
+        [class.bg-rose-50]="toast.kind === 'error'"
+        [class.text-rose-900]="toast.kind === 'error'"
+      >
+        <div class="mt-0.5 h-2.5 w-2.5 rounded-full" [class.bg-emerald-500]="toast.kind === 'success'" [class.bg-rose-500]="toast.kind === 'error'"></div>
+        <p class="flex-1 text-sm font-medium">{{ toast.message }}</p>
+        <button type="button" class="text-sm font-semibold opacity-70 hover:opacity-100" (click)="toastService.dismiss(toast.id)">Close</button>
+      </div>
+    }
+  </div>
+
   <header class="border-b border-slate-200 bg-white/80 backdrop-blur">
     <nav class="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
       <a routerLink="/" class="text-lg font-bold tracking-tight text-slate-900">AI Prompt Library</a>

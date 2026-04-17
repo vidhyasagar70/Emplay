@@ -1,0 +1,156 @@
+{
+  "info": {
+    "_postman_id": "7d3a4c91-4f5e-4f58-9d13-0d3f4f15f3d7",
+    "name": "AI Prompt Library API",
+    "description": "Collection for the AI Prompt Library backend API.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["health"]
+        }
+      }
+    },
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "const json = pm.response.json();",
+              "if (json && json.access_token) {",
+              "  pm.collectionVariables.set('token', json.access_token);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/auth/login",
+          "host": ["{{baseUrl}}"],
+          "path": ["auth", "login"]
+        }
+      }
+    },
+    {
+      "name": "List Prompts",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/prompts",
+          "host": ["{{baseUrl}}"],
+          "path": ["prompts"]
+        }
+      }
+    },
+    {
+      "name": "List Prompts By Tag",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/prompts?tag=anime",
+          "host": ["{{baseUrl}}"],
+          "path": ["prompts"],
+          "query": [
+            {
+              "key": "tag",
+              "value": "anime"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "Get Prompt By Id",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/prompts/{{promptId}}",
+          "host": ["{{baseUrl}}"],
+          "path": ["prompts", "{{promptId}}"]
+        }
+      }
+    },
+    {
+      "name": "Create Prompt",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{token}}",
+              "type": "string"
+            }
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Cyberpunk Skyline\",\n  \"content\": \"Create a cinematic aerial shot of a neon cyberpunk skyline with rain reflections, volumetric fog, and dramatic lighting.\",\n  \"complexity\": 8,\n  \"tags\": [\"cyberpunk\", \"city\", \"rain\"]\n}"
+        },
+        "url": {
+          "raw": "{{baseUrl}}/prompts",
+          "host": ["{{baseUrl}}"],
+          "path": ["prompts"]
+        }
+      }
+    },
+    {
+      "name": "List Tags",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tags",
+          "host": ["{{baseUrl}}"],
+          "path": ["tags"]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:4000"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "promptId",
+      "value": "00000000-0000-0000-0000-000000000000"
+    }
+  ]
+}
